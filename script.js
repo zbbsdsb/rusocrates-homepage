@@ -113,6 +113,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 初始化鼠标跟随效果
     createMouseFollower();
+
+    // 代码片段标签页切换
+    const tabButtons = document.querySelectorAll('.tab-button');
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // 移除所有标签页的活动状态
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // 添加当前标签页的活动状态
+            this.classList.add('active');
+            const tabId = this.getAttribute('data-tab');
+            document.getElementById(tabId).classList.add('active');
+        });
+    });
 });
 
 // 页面滚动时的头部效果

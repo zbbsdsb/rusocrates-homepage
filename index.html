@@ -15,6 +15,12 @@
                     <h1>R U Socrates</h1>
                     <p>A research engine anyone can understand</p>
                 </div>
+                <a href="https://github.com/zbbsdsb/R-U-Socrates" target="_blank" class="github-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                    </svg>
+                    GitHub
+                </a>
             </div>
         </div>
     </header>
@@ -36,6 +42,9 @@
                     <div class="hero-image">
                         <!-- Research loop live stream -->
                         <img src="assets/pipeline.png" alt="Research loop pipeline" class="hero-img">
+                        <div class="image-caption">
+                            <p>Research loop pipeline: The complete flow of knowledge → hypothesis → experiment → analysis, repeated autonomously until a solution is found.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -76,6 +85,9 @@
                 <div class="architecture-diagram">
                     <!-- Architecture diagram -->
                     <img src="assets/Overview.png" alt="ASI-Evolve Architecture" class="architecture-img">
+                    <div class="image-caption">
+                        <p>ASI-Evolve Architecture: The system architecture showing how the Researcher, Engineer, and Analyzer agents work together in a closed loop.</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -122,7 +134,13 @@
                     </div>
                     <div class="code-snippet">
                         <h3>Example Code</h3>
-                        <pre><code>from asi_evolve import ResearchPipeline
+                        <div class="code-tabs">
+                            <button class="tab-button active" data-tab="python">Python API</button>
+                            <button class="tab-button" data-tab="typescript">TypeScript API</button>
+                            <button class="tab-button" data-tab="wrapper">Our Wrapper</button>
+                        </div>
+                        <div class="tab-content active" id="python">
+                            <pre><code>from asi_evolve import ResearchPipeline
 
 # Initialize the research pipeline
 pipeline = ResearchPipeline(
@@ -147,6 +165,96 @@ for result in results:
     print(f"Analysis: {result.analysis[:100]}...")
     print("---")
 </code></pre>
+                        </div>
+                        <div class="tab-content" id="typescript">
+                            <pre><code>import { createTask, subscribeToRun } from './services/taskService';
+
+// Create a research task
+const task = await createTask({
+  name: 'Optimize LLM Serving',
+  description: 'How to optimize LLM serving throughput?',
+  model: 'gpt-4o-mini',
+  max_iterations: 10
+});
+
+// Subscribe to real-time pipeline events
+const unsubscribe = subscribeToRun(task.id, (event) => {
+  console.log(`Iteration: ${event.iteration}`);
+  console.log(`Current step: ${event.type}`);
+  console.log(`Node: ${event.node_name}`);
+  console.log(`Score: ${event.eval_score}`);
+  console.log(`Analysis: ${event.analysis}`);
+  
+  if (event.type === 'run_complete') {
+    console.log('Run completed successfully!');
+    unsubscribe();
+  }
+});
+
+// Get the final result
+const result = await getResult(task.id);
+console.log(`Best score: ${result.best_score}`);
+console.log(`Best solution: ${result.best_node.code}`);
+</code></pre>
+                        </div>
+                        <div class="tab-content" id="wrapper">
+                            <pre><code>// R U Socrates wrapper around ASI-Evolve
+class SocratesResearchEngine {
+  constructor(config) {
+    this.pipeline = new ResearchPipeline({
+      cognition_store: config.cognitionStore,
+      database: config.database,
+      model: config.model || 'gpt-4o-mini'
+    });
+    this.taskStore = new TaskStore();
+  }
+
+  async createTask(name, description, options = {}) {
+    // Create task in our system
+    const task = this.taskStore.create({
+      name,
+      description,
+      config: {
+        model: options.model,
+        maxNodes: options.maxNodes || 50,
+        timeoutSeconds: options.timeoutSeconds || 3600
+      }
+    });
+
+    // Start the ASI-Evolve pipeline
+    this.runTask(task.id, description, options);
+    return task;
+  }
+
+  async runTask(taskId, question, options) {
+    // Wrap ASI-Evolve run with our monitoring and logging
+    const results = await this.pipeline.run({
+      question,
+      steps: options.maxIterations || 10,
+      sample_n: options.sampleSize || 5
+    });
+
+    // Process and store results in our system
+    await this.taskStore.updateResults(taskId, results);
+    return results;
+  }
+
+  // Real-time event streaming for transparency
+  subscribeToTask(taskId, handler) {
+    // Subscribe to ASI-Evolve events and transform them
+    return this.pipeline.subscribe((event) => {
+      // Add our own metadata and format
+      const transformedEvent = {
+        ...event,
+        taskId,
+        timestamp: new Date().toISOString()
+      };
+      handler(transformedEvent);
+    });
+  }
+}
+</code></pre>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -170,6 +278,7 @@ for result in results:
     <footer class="footer">
         <div class="container">
             <p>© Oasis Company · GNU General Public License v3.0</p>
+            <p class="copyright-note">Images courtesy of ASI-Evolve project. All rights reserved.</p>
         </div>
     </footer>
 
