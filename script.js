@@ -30,7 +30,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }, observerOptions);
 
     // 观察需要动画的元素
-    const animateElements = document.querySelectorAll('.feature-item, .framework-content, .hero-content, .architecture-diagram, .asi-content');
+    const animateElements = document.querySelectorAll('.feature-item, .framework-content, .hero-content, .architecture-diagram, .asi-content, .intro-content');
+
 
     animateElements.forEach(element => {
         element.style.opacity = '0';
